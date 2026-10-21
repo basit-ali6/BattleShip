@@ -124,22 +124,25 @@ computerGrid.addEventListener("click", (event) => {
 
     checkGameOver();
 });
-    // Add each grid to its section.
-    humanSection.append(humanGrid);
-    computerSection.append(computerGrid);
+// Add each grid to its section.
+humanSection.append(humanGrid);
+computerSection.append(computerGrid);
 
 
 const humanShips = [new Ship(3), new Ship(2)];
+const computerShips = [new Ship(3), new Ship(2)];
 
-function placeHumanShipsRandomly() {
-    // Clear the previous human ship positions.
-    humanPlayer.gameboard.board =
+
+function placeShipsRandomly(player, ships) {
+    // Clear the previous ship positions.
+    player.gameboard.board =
         Array.from({ length: 10 }, () => Array(10).fill(null));
 
-    humanPlayer.gameboard.missedAttacks = [];
-    humanPlayer.gameboard.attackedCoordinates = [];
+    player.gameboard.missedAttacks = [];
+    player.gameboard.attackedCoordinates = [];
 
-    humanShips.forEach((ship) => {
+    ships.forEach((ship) => {
+
         let placed = false;
         let attempts = 0;
 
@@ -159,7 +162,7 @@ function placeHumanShipsRandomly() {
                 if (
                     shipRow >= 10 ||
                     shipCol >= 10 ||
-                    humanPlayer.gameboard.board[shipRow][shipCol] !== null
+                    player.gameboard.board[shipRow][shipCol] !== null
                 ) {
                     break;
                 }
@@ -169,16 +172,20 @@ function placeHumanShipsRandomly() {
 
             if (coordinates.length === ship.length) {
                 placed = coordinates.every(([shipRow, shipCol]) =>
-                    humanPlayer.gameboard.placeShip(ship, [shipRow, shipCol])
+                    player.gameboard.placeShip(ship, [shipRow, shipCol])
                 );
             }
         }
 
         if (!placed) {
-            throw new Error("Unable to place human ships.");
+            throw new Error("Unable to place ships.");
         }
     });
 
+
+}
+
+function displayHumanShips() {
     // Display the human ships on the grid.
     humanGrid.querySelectorAll(".grid-cell").forEach((cell) => {
         cell.classList.remove("ship-cell");
@@ -201,20 +208,10 @@ function placeHumanShipsRandomly() {
 randomPlacementButton.addEventListener("click", () => {
     if (gameOver) return;
 
-    placeHumanShipsRandomly();
+    placeShipsRandomly(humanPlayer, humanShips);
+    displayHumanShips();
 });
 
-
-placeHumanShipsRandomly();
-
-
-
-    // Place two ships on the computer board.
-    const enemyShipOne = new Ship(3);
-    computerPlayer.gameboard.placeShip(enemyShipOne, [1, 1]);
-    computerPlayer.gameboard.placeShip(enemyShipOne, [1, 2]);
-    computerPlayer.gameboard.placeShip(enemyShipOne, [1, 3]);
-
-    const enemyShipTwo = new Ship(2);
-    computerPlayer.gameboard.placeShip(enemyShipTwo, [4, 5]);
-    computerPlayer.gameboard.placeShip(enemyShipTwo, [4, 6])
+placeShipsRandomly(humanPlayer, humanShips);
+displayHumanShips();
+placeShipsRandomly(computerPlayer, computerShips);
