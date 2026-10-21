@@ -8,10 +8,28 @@ class Gameboard {
   }
 
   // Places a ship at the specified coordinates.
-  placeShip(ship, coordinates) {
-    const [row, column] = coordinates;
-    this.board[row][column] = ship
-  }
+placeShip(ship, coordinates) {
+    const [row, col] = coordinates;
+
+    // Check if the coordinates are within the board.
+    if (
+        row < 0 ||
+        row >= 10 ||
+        col < 0 ||
+        col >= 10
+    ) {
+        return false;
+    }
+
+    // Prevent ships from overlapping.
+    if (this.board[row][col] !== null) {
+        return false;
+    }
+
+    this.board[row][col] = ship;
+    return true;
+}
+
 
   // Records attacks and registers ship hits.
   receiveAttack(coordinates) {

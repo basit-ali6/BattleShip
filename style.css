@@ -24,3 +24,34 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
+
+
+/* Arrange each board into ten equal columns. */
+.human-grid,
+.computer-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Keep every cell square and visible. */
+.grid-cell {
+  aspect-ratio: 1;
+  border: 1px solid #999;
+  background-color: #fff;
+}
+
+/* Visually distinguish placed ships from empty cells. */
+.ship-cell {
+  background-color: #64748b;
+}
+/* Highlight cells where an attack hits a ship. */
+.hit {
+  background-color: #ef4444;
+}
+
+/* Highlight cells where an attack misses. */
+.miss {
+  background-color: #93c5fd;
+}
