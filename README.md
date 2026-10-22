@@ -2,6 +2,10 @@
 
 A classic Battleship game built with JavaScript, HTML, and CSS. Challenge the computer, plan your attacks, and try to sink all its ships before it sinks yours!
 
+## 🚀 Live Demo
+
+Play the game here: [**Battleship — Live Demo**](https://basit-ali6.github.io/BattleShip/)
+
 ## 🎮 Game Preview
 
 ![Battleship Game Preview](screenshots/battleSHip.png)
