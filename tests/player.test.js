@@ -1,5 +1,5 @@
-import Ship from "./ship.js";
-import Player from "./player.js";
+import Player from "../src/modules/player.js";
+import Ship from "../src/modules/ship.js";
 import { jest } from "@jest/globals";
 
 // 1. Test human player type

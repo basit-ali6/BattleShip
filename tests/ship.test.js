@@ -1,4 +1,4 @@
-import Ship from "./ship";
+import Ship from "../src/modules/ship.js";
 
 // 1. Test hit registration
 describe("Ship", () => {

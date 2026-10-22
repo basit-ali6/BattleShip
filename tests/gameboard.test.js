@@ -1,7 +1,7 @@
 
-import Gameboard from "./gameboard";
-import Player from "./player.js";
-import Ship from "./ship";
+import Gameboard from "../src/modules/gameboard.js";
+import Player from "../src/modules/player.js";
+import Ship from "../src/modules/ship.js";
 
 // 1. Test empty board initialization
 describe("Gameboard", () => {

@@ -2,7 +2,7 @@
   "name": "battleship",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
     "build": "webpack"
@@ -17,6 +17,7 @@
     "@jest/globals": "^30.5.2",
     "babel-jest": "^30.5.2",
     "css-loader": "^7.1.5",
+    "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.8",
     "jest": "^30.5.2",
     "style-loader": "^4.0.0",

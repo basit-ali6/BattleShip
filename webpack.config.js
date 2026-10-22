@@ -6,10 +6,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  entry: "./game.js",
+  entry: "./src/index.js",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
   mode: "development",
   module: {
@@ -19,6 +20,10 @@ export default {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      {
         test: /\.svg$/i,
         type: "asset/resource",
       },
@@ -26,9 +31,8 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html",
-      favicon: "./battleship.svg",
+      template: "./src/index.html",
+      favicon: "./src/assets/battleship.svg",
     }),
-   
   ],
 };
