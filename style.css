@@ -1,57 +1,262 @@
-
-/* Apply consistent box sizing. */
+/* ===== Base ===== */
 * {
   box-sizing: border-box;
 }
 
-/* Set the base page appearance. */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #333;
-  background-color: #f5f5f5;
+:root {
+  --bg: #0b1220;
+  --panel: #111a2e;
+  --cell: #172238;
+  --cell-hover: #22324f;
+  --line: rgba(148, 163, 184, 0.16);
+  --text: #e5e9f0;
+  --muted: #8b98ad;
+  --accent: #22d3ee;
+  --ship: #14b8a6;
+  --hit: #f43f5e;
+  --miss: #64748b;
+  --win: #fbbf24;
 }
 
-/* Center the main heading. */
-h1 {
-  margin: 32px 0;
-  text-align: center;
-}
-
-/* Keep page content centered. */
 body {
-  max-width: 1200px;
   margin: 0 auto;
+  max-width: 1100px;
+  min-height: 100vh;
   padding: 0 20px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+html {
+  background-color: var(--bg);
+}
+
+h1 {
+  margin: 32px 0 24px;
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.game-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.game-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.25));
+}
+
+@media (max-width: 480px) {
+  .game-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .game-title {
+    gap: 10px;
+    font-size: 1.6rem;
+  }
 }
 
 
-/* Arrange each board into ten equal columns. */
+/* ===== Layout ===== */
+#game-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 420px));
+  justify-content: center;
+  gap: 20px 32px;
+  padding-bottom: 48px;
+}
+
+/* Win / lose message (empty ho to hide). */
+#game-container > h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--win);
+  animation: pop 0.35s ease-out;
+}
+
+#game-container > h2:empty {
+  display: none;
+}
+
+/* Random placement button: chhota aur center mein. */
+#random-placement-btn {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: auto;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #06222b;
+  background-color: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+#random-placement-btn:disabled {
+  background-color: #475569;
+  color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  filter: none;
+}
+
+#random-placement-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+#random-placement-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== Boards ===== */
+#game-container section {
+  padding: 16px;
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+#game-container section h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .human-grid,
 .computer-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
   width: 100%;
-  max-width: 400px;
 }
 
-/* Keep every cell square and visible. */
+
+/* ===== Cells ===== */
 .grid-cell {
   aspect-ratio: 1;
-  border: 1px solid #999;
-  background-color: #fff;
+  position: relative;
+  background-color: var(--cell);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  transition: background-color 0.15s;
 }
 
-/* Visually distinguish placed ships from empty cells. */
+/* Hover only on unattacked enemy cells. */
+.computer-grid .grid-cell:not(.hit):not(.miss):hover {
+  background-color: var(--cell-hover);
+  cursor: crosshair;
+}
+
 .ship-cell {
-  background-color: #64748b;
-}
-/* Highlight cells where an attack hits a ship. */
-.hit {
-  background-color: #ef4444;
+  background-color: var(--ship);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
-/* Highlight cells where an attack misses. */
+/* Keep human ships dark silver. */
+.human-grid .ship-cell {
+  background-color: #71717a;
+  border-color: #a1a1aa;
+}
+
+/* Successful hits remain red. */
+.hit {
+  background-color: var(--hit);
+  border-color: transparent;
+  animation: pop 0.25s ease-out;
+}
+
+/* Miss cells remain dark by default. */
 .miss {
-  background-color: #93c5fd;
+  background-color: var(--cell);
+  animation: pop 0.25s ease-out;
+}
+
+/* Human grid: successful hit red, miss dark. */
+.human-grid .hit {
+  background-color: var(--hit);
+}
+
+.human-grid .miss {
+  background-color: var(--cell);
+}
+
+
+/* Hit red on both grids */
+.computer-grid .miss,
+.human-grid .miss {
+  background-color: var(--accent);
+}
+
+/* Miss button jaisa cyan on both grids */
+.human-grid .miss,
+.computer-grid .miss {
+  background-color: var(--accent);
+}
+
+
+.miss::after {
+  content: "";
+  position: absolute;
+  inset: 36%;
+  border-radius: 50%;
+  background-color: var(--miss);
+}
+
+.page-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-loader p {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.loader-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--cell-hover);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ===== Animations ===== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0.5; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 760px) {
+  #game-container {
+    grid-template-columns: minmax(0, 420px);
+  }
 }

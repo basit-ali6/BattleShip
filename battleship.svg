@@ -1,0 +1,38 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#172b46"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="ship" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#sea)"/>
+  <rect x="3" y="3" width="122" height="122" rx="25"
+        fill="none" stroke="#22d3ee" stroke-opacity=".35" stroke-width="2"/>
+
+  <g fill="none" stroke="#22d3ee" stroke-width="3"
+     stroke-linecap="round" opacity=".6">
+    <path d="M17 91h20"/>
+    <path d="M91 91h20"/>
+    <path d="M23 101h28"/>
+    <path d="M77 101h28"/>
+  </g>
+
+  <g stroke="#a5f3fc" stroke-width="2" stroke-linejoin="round">
+    <path d="M17 75h94l-13 20H34z" fill="url(#ship)"/>
+    <path d="M43 75V60h42v15z" fill="#0e7490"/>
+    <path d="M52 60V48h23v12z" fill="#22d3ee"/>
+    <path d="M61 48V35h5v13z" fill="#67e8f9"/>
+    <path d="M66 38l15 8H66z" fill="#fbbf24" stroke="#fbbf24"/>
+    <path d="M39 66h12M77 66h9" fill="none" stroke="#cffafe"/>
+  </g>
+
+  <path d="M28 108q9-5 18 0t18 0t18 0t18 0"
+        fill="none" stroke="#22d3ee" stroke-width="3"
+        stroke-linecap="round"/>
+</svg>

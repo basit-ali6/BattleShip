@@ -9,6 +9,19 @@ const computerPlayer = new Player("computer");
 // Select the main game container.
 const gameContainer = document.querySelector("#game-container");
 
+// Page loader (UI only).
+const pageLoader = document.createElement("div");
+pageLoader.classList.add("page-loader");
+
+const loaderSpinner = document.createElement("div");
+loaderSpinner.classList.add("loader-spinner");
+
+const loaderText = document.createElement("p");
+loaderText.textContent = "Preparing battlefield...";
+
+pageLoader.append(loaderSpinner, loaderText);
+document.body.append(pageLoader);
+
 
 const randomPlacementButton = document.createElement("button");
 randomPlacementButton.id = "random-placement-btn";
@@ -22,6 +35,7 @@ const humanSection = document.createElement("section");
 const computerSection = document.createElement("section");
 
 let gameOver = false;
+let computerThinking = false;
 
 const gameMessage = document.createElement("h2");
 gameMessage.textContent = "";
@@ -80,7 +94,7 @@ computerGrid.addEventListener("click", (event) => {
     const cell = event.target.closest(".grid-cell");
 
     if (!cell) return;
-    if (gameOver) return;
+    if (gameOver || computerThinking) return;
 
     const row = Number(cell.dataset.row);
     const col = Number(cell.dataset.col);
@@ -98,31 +112,40 @@ computerGrid.addEventListener("click", (event) => {
     // Human attacks the computer's board.
     const ship = computerPlayer.gameboard.board[row][col];
     computerPlayer.gameboard.receiveAttack(coordinates);
+    randomPlacementButton.disabled = true;
+    computerThinking = true;
 
     cell.classList.add(ship ? "hit" : "miss");
 
-    // Computer attacks the human's board.
-    computerPlayer.attack(humanPlayer.gameboard);
 
-    const computerAttack =
-        humanPlayer.gameboard.attackedCoordinates.at(-1);
+    // Computer attacks one second after the human attack.
+    setTimeout(() => {
+        if (gameOver) return;
 
-    if (!computerAttack) return;
+        computerPlayer.attack(humanPlayer.gameboard);
 
-    const [computerRow, computerCol] = computerAttack;
+        const computerAttack =
+            humanPlayer.gameboard.attackedCoordinates.at(-1);
 
-    const humanCell = humanGrid.querySelector(
-        `[data-row="${computerRow}"][data-col="${computerCol}"]`
-    );
+        if (!computerAttack) return;
 
-    if (!humanCell) return;
+        const [computerRow, computerCol] = computerAttack;
 
-    const humanShip =
-        humanPlayer.gameboard.board[computerRow][computerCol];
+        const humanCell = humanGrid.querySelector(
+            `[data-row="${computerRow}"][data-col="${computerCol}"]`
+        );
 
-    humanCell.classList.add(humanShip ? "hit" : "miss");
+        if (!humanCell) return;
 
-    checkGameOver();
+        const humanShip =
+            humanPlayer.gameboard.board[computerRow][computerCol];
+
+        humanCell.classList.add(humanShip ? "hit" : "miss");
+
+        checkGameOver();
+        computerThinking = false;
+    }, 1000);
+
 });
 // Add each grid to its section.
 humanSection.append(humanGrid);
@@ -215,3 +238,9 @@ randomPlacementButton.addEventListener("click", () => {
 placeShipsRandomly(humanPlayer, humanShips);
 displayHumanShips();
 placeShipsRandomly(computerPlayer, computerShips);
+
+// Hide the loader once everything is ready.
+setTimeout(() => {
+    pageLoader.classList.add("hidden");
+    setTimeout(() => pageLoader.remove(), 400);
+}, 900);
