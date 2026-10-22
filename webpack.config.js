@@ -12,7 +12,7 @@ export default {
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
-  mode: "development",
+  mode: "production",
   module: {
     rules: [
       {
